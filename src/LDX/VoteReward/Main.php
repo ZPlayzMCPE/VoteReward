@@ -111,7 +111,7 @@ class Main extends PluginBase {
       return true;
     }
     if($multiplier < 1) {
-      $player->sendMessage("§a[§bVoteReward§a] §6You haven't voted on any server lists! §aYou can vote for: §bin game Money ($15,000), §cand Diamond pickaxe. §aVote for us to get these perks at the following links:\n§b1st: §3http://vfpevote.ml\n§aVote every day to be the top voter! \n§aAll three top voters will get Donor ranks! \n§aFirst top voter will get: §bKnight\n§aSecond top voter: §bFighter\n§aThird top voter: §bMiner\n§a(They're all Donor ranks!)");
+      $player->sendMessage("§a[§bVoteReward§a] §6You haven't voted on any server lists! §aYou can vote for: §bin game Money ($10,000), §aVote for us to get these perks at the following links:\n§b1st: §3http://vkpe.ml\n§aVote every day to be the top voter!)");
       return true;
     }
     $clones = [];
