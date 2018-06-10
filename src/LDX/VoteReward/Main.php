@@ -10,13 +10,11 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\item\Item;
 
 class Main extends PluginBase {
-
   private $message = "";
   private $items = [];
   private $commands = [];
   private $debug = false;
   public $queue = [];
-
   public function onLoad() {
     if(file_exists($this->getDataFolder() . "config.yml")) {
       $c = $this->getConfig()->getAll();
@@ -35,11 +33,9 @@ class Main extends PluginBase {
       }
     }
   }
-
   public function onEnable() {
     $this->reload();
   }
-
   public function reload() {
     $this->saveDefaultConfig();
     if(!is_dir($this->getDataFolder() . "Lists/")) {
@@ -64,14 +60,13 @@ class Main extends PluginBase {
     $this->commands = $config["Commands"];
     $this->debug = isset($config["Debug"]) && $config["Debug"] === true ? true : false;
   }
-
   public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool {
     switch(strtolower($command->getName())) {
       case "vote":
         if(isset($args[0]) && strtolower($args[0]) == "reload") {
           if(Utils::hasPermission($sender, "votereward.command.reload")) {
             $this->reload();
-            $sender->sendMessage("[VoteReward] All configurations have been reloaded.");
+            $sender->sendMessage("§a[§bVoteReward§a] §6All configurations have been reloaded.");
             break;
           }
           $sender->sendMessage("You do not have permission to use this subcommand.");
@@ -86,7 +81,7 @@ class Main extends PluginBase {
           break;
         }
         if(in_array(strtolower($sender->getName()), $this->queue)) {
-          $sender->sendMessage("[VoteReward] Slow down! We're already checking lists for you.");
+          $sender->sendMessage("§a[§bVoteReward§a] §dSlow down! We're already checking lists for you.");
           break;
         }
         $this->queue[] = strtolower($sender->getName());
@@ -105,14 +100,13 @@ class Main extends PluginBase {
     }
     return true;
   }
-
   public function rewardPlayer($player, $multiplier) {
     if(!$player instanceof Player) {
-      return;
+      return true;
     }
     if($multiplier < 1) {
-      $player->sendMessage("[VoteReward] You haven't voted on any server lists!");
-      return;
+      $player->sendMessage("§a[§bVoteReward§a] §6You haven't voted on any server lists! §aYou can vote for: §b1 Money Pouch, §cBuilding blocks, §dVoter rank\n§eAwrsome commands, §130k Money in game, §2and so much more! §aVote for us to get these perks at the following links:\n§b1st: §3http://vmpevote.ml");
+      return true;
     }
     $clones = [];
     foreach($this->items as $item) {
@@ -152,7 +146,6 @@ class Main extends PluginBase {
       }
       $this->getServer()->getLogger()->info($message);
     }
-    $player->sendMessage("[VoteReward] You voted on $multiplier server list" . ($multiplier == 1 ? "" : "s") . "!");
+    $player->sendMessage("§a[§bVoteReward§a] §6You voted on §e$multiplier §6server list" . ($multiplier == 1 ? "" : "s") . "!");
   }
-
 }
